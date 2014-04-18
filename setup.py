@@ -20,7 +20,7 @@ history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 setup(
     name='neural',
     version='0.1.0',
-    description='Simple neural network implementation in Python based on Andrew Ng's Machine Learning online course.',
+    description='Simple neural network implementation in Python based on Andrew Ng\'s Machine Learning online course.',
     long_description=readme + '\n\n' + history,
     author='Prem Nair',
     author_email='prem.q.nair@gmail.com',
