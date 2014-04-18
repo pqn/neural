@@ -9,7 +9,7 @@ Neural
         :target: https://travis-ci.org/pqn/neural
 
 .. image:: https://pypip.in/d/neural/badge.png
-        :target: https://crate.io/packages/neural?version=latest
+        :target: https://pypi.python.org/pypi/neural
 
 
 Simple neural network implementation in Python based on Andrew Ng's Machine Learning online course.
