@@ -8,8 +8,9 @@ Neural
 .. image:: https://travis-ci.org/pqn/neural.png?branch=master
     :target: https://travis-ci.org/pqn/neural
 
-.. image:: https://pypip.in/d/neural/badge.png
-    :target: https://pypi.python.org/pypi/neural
+.. image:: https://pypip.in/download/neural/badge.png
+    :target: https://pypi.python.org/pypi//neural/
+    :alt: Downloads
 
 .. image:: https://requires.io/github/pqn/neural/requirements.png?branch=master
     :target: https://requires.io/github/pqn/neural/requirements/?branch=master
