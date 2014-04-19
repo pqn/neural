@@ -18,12 +18,12 @@ class NeuralNetwork:
 
     def train(self, training_set, iterations=500):
         """Trains itself using the sequence data."""
-        self.__X = np.matrix([example[0] for example in training_set])
+        self.__X = np.float64(np.matrix([example[0] for example in training_set]))
         if self.__num_labels == 1:
-            self.__y = np.matrix([example[1] for example in training_set]).reshape((-1, 1))
+            self.__y = np.float64(np.matrix([example[1] for example in training_set]).reshape((-1, 1)))
         else:
             eye = np.eye(self.__num_labels)
-            self.__y = np.matrix([eye[example[1]] for example in training_set])
+            self.__y = np.float64(np.matrix([eye[example[1]] for example in training_set]))
         self.__m = self.__X.shape[0]
         self.__input_layer_size = self.__X.shape[1]
         self.__sizes = [self.__input_layer_size]
@@ -37,7 +37,7 @@ class NeuralNetwork:
         self.__thetas = self.__roll(fmin_ncg(self.__cost_function, initial_theta, self.__cost_grad_function, maxiter=iterations))
 
     def predict(self, X):
-        return self.__cost(self.__unroll(self.__thetas), 0, np.matrix(X))
+        return self.__cost(self.__unroll(self.__thetas), 0, np.float64(np.matrix(X)))
 
     def __cost_function(self, params):
         return self.__cost(params, 1, self.__X)
@@ -108,6 +108,3 @@ class NeuralNetwork:
 
     def sigmoid_grad(self, z):
         return np.multiply(self.sigmoid(z), 1-self.sigmoid(z))
-
-    def optimized_thetas(self):
-        print(self.__thetas)
