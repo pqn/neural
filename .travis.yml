@@ -15,7 +15,10 @@ virtualenv:
 before_install:
   - SITE_PKG_DIR=$VIRTUAL_ENV/lib/python$TRAVIS_PYTHON_VERSION/site-packages
   - rm -f $VIRTUAL_ENV/lib/python$TRAVIS_PYTHON_VERSION/no-global-site-packages.txt
-  - if [ ${TRAVIS_PYTHON_VERSION:0:1} == "2" ]; then sudo apt-get install -qq python-numpy python-scipy; else sudo apt-get install -qq python3-numpy python3-scipy; fi
+  - pip install numpy
+  - if [ ${TRAVIS_PYTHON_VERSION:0:1} == "2" ]; then sudo apt-get install -qq python-scipy; else sudo apt-get install -qq python3-scipy; fi
+  - python -c "import numpy;print(numpy.__version__)"
+  - python -c "import scipy;print(scipy.__version__)"
 
 install: python setup.py install
 
