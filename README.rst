@@ -16,7 +16,7 @@ Neural
     :target: https://requires.io/github/pqn/neural/requirements/?branch=master
     :alt: Requirements Status
 
-Simple neural network implementation in Python based on Andrew Ng's Machine Learning online course.
+Simple neural network implementation in Python based on Andrew Ng's Machine Learning online course. Not intended/optimized for practical use, although it does work!
 
 * Free software: BSD license
 * Documentation: http://neural.rtfd.org.
