@@ -29,10 +29,11 @@ class NeuralNetwork:
         self.__sizes = [self.__input_layer_size]
         self.__sizes.extend(self.__hidden_layers)
         self.__sizes.append(self.__num_labels)
-        param_size = 0
+        initial_theta = []
         for count in range(len(self.__sizes) - 1):
-            param_size += (self.__sizes[count] + 1) * self.__sizes[count+1]
-        print(param_size)
+            epsilon = np.sqrt(6) / np.sqrt(self.__sizes[count]+self.__sizes[count+1])
+            initial_theta.append(np.random.rand((self.__sizes[count] + 1),self.__sizes[count+1])*2*epsilon-epsilon)
+        initial_theta = self.__unroll(initial_theta)
         # self.__thetas = self.__roll(fmin_ncg(self.__cost, np.zeros(param_size), self.__costGrad))
 
     def __cost(self, params):
