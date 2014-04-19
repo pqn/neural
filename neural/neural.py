@@ -38,6 +38,12 @@ class NeuralNetwork:
 
     def __cost(self, params):
         """Computes cost function."""
+        params = self.__roll(params)
+        a = np.concatenate((np.ones((self.__m, 1)), self.__X), axis=1)
+        calculated_a = [a]
+        for theta in params:
+            a = self.sigmoid(a*theta.transpose())
+            calculated_a.add(a)
 
     def __cost_grad(self, params):
         """Computes cost function derivative."""
