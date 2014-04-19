@@ -17,6 +17,7 @@ before_install:
   - rm -f $VIRTUAL_ENV/lib/python$TRAVIS_PYTHON_VERSION/no-global-site-packages.txt
 
 install:
+ - sudo apt-get install gfortran libopenblas-dev liblapack-dev
  - pip install -r requirements.txt
  - python setup.py install
 
