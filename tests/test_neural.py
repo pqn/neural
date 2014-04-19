@@ -27,6 +27,16 @@ class TestNeural(unittest.TestCase):
         for item in xor_data:
             assert nn.predict(item[0]) == item[1]
 
+    def test_xor_alternate_input(self):
+        nn = neural.NeuralNetwork()
+        X = np.matrix("[1 0; 0 1; 0 0; 1 1]")
+        y = np.matrix("[1; 1; 0; 0]")
+        xor_data_alternate = [X, y]
+        nn.train(xor_data_alternate)
+        xor_data = [[[1,0],1],[[0,1],1],[[0,0],0],[[1,1],0]]
+        for item in xor_data:
+            assert nn.predict(item[0]) == item[1]
+
     def test_multilabel(self):
         nn = neural.NeuralNetwork(num_labels=3)
         test_data = []
