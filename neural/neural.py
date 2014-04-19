@@ -3,7 +3,7 @@
 
 from __future__ import division
 import numpy as np
-from scipy.optimize import fmin_ncg
+from scipy.optimize import fmin_bfgs
 
 class NeuralNetwork:
     """A simple neural network."""
@@ -43,7 +43,7 @@ class NeuralNetwork:
             epsilon = np.sqrt(6) / np.sqrt(self.__sizes[count]+self.__sizes[count+1])
             initial_theta.append(np.random.rand(self.__sizes[count+1],self.__sizes[count]+1)*2*epsilon-epsilon)
         initial_theta = self.__unroll(initial_theta)
-        self.__thetas = self.__roll(fmin_ncg(self.__cost_function, initial_theta, self.__cost_grad_function, maxiter=iterations))
+        self.__thetas = self.__roll(fmin_bfgs(self.__cost_function, initial_theta, fprime=self.__cost_grad_function, maxiter=iterations))
 
     def predict(self, X):
         return self.__cost(self.__unroll(self.__thetas), 0, np.matrix(X))
