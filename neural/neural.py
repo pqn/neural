@@ -36,16 +36,19 @@ class NeuralNetwork:
         initial_theta = self.__unroll(initial_theta)
         self.__thetas = self.__roll(fmin_ncg(self.__cost_function, initial_theta, self.__cost_grad_function, maxiter=iterations))
 
+    def predict(self, X):
+        return self.__cost(self.__unroll(self.__thetas), 0, np.matrix(X))
+
     def __cost_function(self, params):
-        return self.__cost(params, True)
+        return self.__cost(params, 1, self.__X)
 
     def __cost_grad_function(self, params):
-        return self.__cost(params, False)
+        return self.__cost(params, 2, self.__X)
 
-    def __cost(self, params, just_cost):
+    def __cost(self, params, phase, X):
         """Computes cost function and derivative."""
         params = self.__roll(params)
-        a = np.concatenate((np.ones((self.__m, 1)), self.__X), axis=1) # This is a1
+        a = np.concatenate((np.ones((X.shape[0], 1)), X), axis=1) # This is a1
         calculated_a = [a] # a1 is at index 0, a_n is at index n-1
         calculated_z = [0] # There is no z1, z_n is at index n-1
         for i, theta in enumerate(params): # calculated_a now contains a1, a2, a3 if there was only one hidden layer (two theta matrices)
@@ -56,11 +59,16 @@ class NeuralNetwork:
                 a = np.concatenate((np.ones((a.shape[0], 1)), a), axis=1) # Append the extra column of ones for all other layers
             calculated_a.append(a) # Save the new a
 
+        if phase == 0:
+            if self.__num_labels > 1:
+                return np.argmax(calculated_a[-1], axis=1)
+            return np.round(calculated_a[-1])
+
         J = np.sum(-np.multiply(self.__y, np.log(a[-1]))-np.multiply(1-self.__y, np.log(1-a[-1])))/self.__m; # Calculate cost
         if self.__lambda != 0: # If we're using regularization...
             J += np.sum([np.power(theta[:,1:], 2) for theta in params])*self.__lambda/(2.0*self.__m) # ...add it from all theta matrices
 
-        if just_cost:
+        if phase == 1:
             return J
 
         reversed_d = []
