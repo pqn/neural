@@ -39,7 +39,7 @@ class NeuralNetwork:
     def __cost(self, params):
         """Computes cost function."""
 
-    def __costGrad(self, params):
+    def __cost_grad(self, params):
         """Computes cost function derivative."""
 
     def __roll(self, unrolled):
@@ -55,7 +55,12 @@ class NeuralNetwork:
             index += (in_size + 1) * out_size
         return rolled
 
-
     def __unroll(self, rolled):
         """Converts parameter matrices into an array."""
         return np.array(np.concatenate([matrix.reshape(-1) for matrix in rolled], axis=1)).reshape(-1)
+
+    def sigmoid(self, z):
+        return 1.0 / (1.0 + np.exp(-z))
+
+    def sigmoid_grad(self, z):
+        return np.multiply(self.sigmoid(z), 1-self.sigmoid(z))
