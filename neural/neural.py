@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import division
 import numpy as np
 from scipy.optimize import fmin_ncg
 
@@ -18,12 +19,20 @@ class NeuralNetwork:
 
     def train(self, training_set, iterations=500):
         """Trains itself using the sequence data."""
-        self.__X = np.float64(np.matrix([example[0] for example in training_set]))
-        if self.__num_labels == 1:
-            self.__y = np.float64(np.matrix([example[1] for example in training_set]).reshape((-1, 1)))
+        if len(training_set) > 2:
+            self.__X = np.matrix([example[0] for example in training_set])
+            if self.__num_labels == 1:
+                self.__y = np.matrix([example[1] for example in training_set]).reshape((-1, 1))
+            else:
+                eye = np.eye(self.__num_labels)
+                self.__y = np.matrix([eye[example[1]] for example in training_set])
         else:
-            eye = np.eye(self.__num_labels)
-            self.__y = np.float64(np.matrix([eye[example[1]] for example in training_set]))
+            self.__X = np.matrix(training_set[0])
+            if self.__num_labels == 1:
+                self.__y = np.matrix(training_set[1]).reshape((-1, 1))
+            else:
+                eye = np.eye(self.__num_labels)
+                self.__y = np.matrix([eye[index] for sublist in training_set[1] for index in sublist])
         self.__m = self.__X.shape[0]
         self.__input_layer_size = self.__X.shape[1]
         self.__sizes = [self.__input_layer_size]
@@ -37,7 +46,7 @@ class NeuralNetwork:
         self.__thetas = self.__roll(fmin_ncg(self.__cost_function, initial_theta, self.__cost_grad_function, maxiter=iterations))
 
     def predict(self, X):
-        return self.__cost(self.__unroll(self.__thetas), 0, np.float64(np.matrix(X)))
+        return self.__cost(self.__unroll(self.__thetas), 0, np.matrix(X))
 
     def __cost_function(self, params):
         return self.__cost(params, 1, self.__X)
@@ -64,9 +73,9 @@ class NeuralNetwork:
                 return np.argmax(calculated_a[-1], axis=1)
             return np.round(calculated_a[-1])
 
-        J = np.sum(-np.multiply(self.__y, np.log(a[-1]))-np.multiply(1-self.__y, np.log(1-a[-1])))/self.__m; # Calculate cost
+        J = np.sum(-np.multiply(self.__y, np.log(calculated_a[-1]))-np.multiply(1-self.__y, np.log(1-calculated_a[-1])))/self.__m; # Calculate cost
         if self.__lambda != 0: # If we're using regularization...
-            J += np.sum([np.power(theta[:,1:], 2) for theta in params])*self.__lambda/(2.0*self.__m) # ...add it from all theta matrices
+            J += np.sum([np.sum(np.power(theta[:,1:], 2)) for theta in params])*self.__lambda/(2.0*self.__m) # ...add it from all theta matrices
 
         if phase == 1:
             return J
@@ -75,13 +84,13 @@ class NeuralNetwork:
         reversed_theta_grad = []
         for i in range(len(params)): # For once per theta matrix...
             if i == 0: # ...if it's the first one...
-                d = a[-1] - self.__y # ...initialize the error...
+                d = calculated_a[-1] - self.__y # ...initialize the error...
             else: # ...otherwise d_n-1 = d_n * Theta_n-1[missing ones] .* sigmoid(z_n-1)
                 d = np.multiply(reversed_d[-1]*params[-i][:,1:], self.sigmoid_grad(calculated_z[-1-i])) # With i=1/1 hidden layer we're getting Theta2 at index -1, and z2 at index -2
             reversed_d.append(d)
             theta_grad = reversed_d[-1].transpose() * calculated_a[-i-2] / self.__m
             if self.__lambda != 0:
-                theta_grad += self.__lambda * 1.0 / self.__m * np.concatenate((np.zeros((params[-i].shape[0], 1)), params[-i][:,1:]), axis=1) # regularization
+                theta_grad += np.concatenate((np.zeros((params[-1-i].shape[0], 1)), params[-1-i][:,1:]), axis=1) * self.__lambda / self.__m# regularization
             reversed_theta_grad.append(theta_grad)
         theta_grad = self.__unroll(reversed(reversed_theta_grad))
         return theta_grad
@@ -101,7 +110,7 @@ class NeuralNetwork:
 
     def __unroll(self, rolled):
         """Converts parameter matrices into an array."""
-        return np.array(np.concatenate([matrix.reshape(-1) for matrix in rolled], axis=1)).reshape(-1)
+        return np.array(np.concatenate([matrix.flatten() for matrix in rolled], axis=1)).reshape(-1)
 
     def sigmoid(self, z):
         return 1.0 / (1.0 + np.exp(-z))
