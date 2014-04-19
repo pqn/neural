@@ -41,6 +41,22 @@ class TestNeural(unittest.TestCase):
         for item in predict_data:
             assert nn.predict(item[0]) == item[1]
 
+    def test_xor_parallel(self):
+        nn = neural.NeuralNetwork()
+        xor_data = [[[1,0],1],[[0,1],1],[[0,0],0],[[1,1],0]]
+        nn.train(xor_data)
+        a = nn.predict([item[0] for item in xor_data])
+        b = [item[1] for item in xor_data]
+        for i in range(len(a)):
+            assert a[i] == b[i]
+
+    def test_xor_multiple_hidden(self):
+        nn = neural.NeuralNetwork(hidden_layers=(25,25))
+        xor_data = [[[1,0],1],[[0,1],1],[[0,0],0],[[1,1],0]]
+        nn.train(xor_data)
+        for item in xor_data:
+            assert nn.predict(item[0]) == item[1]
+
     def tearDown(self):
         pass
 

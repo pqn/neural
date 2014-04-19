@@ -117,3 +117,13 @@ class NeuralNetwork:
 
     def sigmoid_grad(self, z):
         return np.multiply(self.sigmoid(z), 1-self.sigmoid(z))
+
+    def grad(self, params, epsilon=0.0001):
+        grad = []
+        for x in range(len(params)):
+            temp = np.copy(params)
+            temp[x] += epsilon
+            temp2 = np.copy(params)
+            temp2[x] -= epsilon
+            grad.append((self.__cost_function(temp)-self.__cost_function(temp2))/(2*epsilon))
+        return np.array(grad)

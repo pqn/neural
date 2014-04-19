@@ -24,4 +24,7 @@ Simple neural network implementation in Python based on Andrew Ng's Machine Lear
 Features
 --------
 
-* TODO
+* Vectorization
+* Multilabel classification
+* Multiple hidden layers
+* Regularization
