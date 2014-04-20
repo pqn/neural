@@ -21,6 +21,7 @@ class TestNeural(unittest.TestCase):
         pass
 
     def test_xor(self):
+        """Basic test to train network on XOR function."""
         nn = neural.NeuralNetwork()
         xor_data = [[[1,0],1],[[0,1],1],[[0,0],0],[[1,1],0]]
         nn.train(xor_data)
@@ -28,6 +29,7 @@ class TestNeural(unittest.TestCase):
             assert nn.predict(item[0]) == item[1]
 
     def test_xor_alternate_input(self):
+        """Tests giving X and y matrices as inputs rather than list of cases."""
         nn = neural.NeuralNetwork()
         X = np.matrix("[1 0; 0 1; 0 0; 1 1]")
         y = np.matrix("[1; 1; 0; 0]")
@@ -38,6 +40,7 @@ class TestNeural(unittest.TestCase):
             assert nn.predict(item[0]) == item[1]
 
     def test_multilabel(self):
+        """Divides complex number plane into 3 regions based on angle."""
         nn = neural.NeuralNetwork(num_labels=3)
         test_data = []
         for x in range(50):
@@ -52,6 +55,7 @@ class TestNeural(unittest.TestCase):
             assert nn.predict(item[0]) == item[1]
 
     def test_xor_parallel(self):
+        """Tests returning a matrix of predictions given multiple cases to test after training."""
         nn = neural.NeuralNetwork()
         xor_data = [[[1,0],1],[[0,1],1],[[0,0],0],[[1,1],0]]
         nn.train(xor_data)
@@ -61,6 +65,7 @@ class TestNeural(unittest.TestCase):
             assert a[i] == b[i]
 
     def test_xor_multiple_hidden(self):
+        """Tests using multiple hidden layers."""
         nn = neural.NeuralNetwork(hidden_layers=(25,25))
         xor_data = [[[1,0],1],[[0,1],1],[[0,0],0],[[1,1],0]]
         nn.train(xor_data)

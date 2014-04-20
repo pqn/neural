@@ -28,3 +28,8 @@ Features
 * Multilabel classification
 * Multiple hidden layers
 * Regularization
+
+Documentation
+-------------
+
+http://neural.rtfd.org

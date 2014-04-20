@@ -46,16 +46,19 @@ class NeuralNetwork:
         self.__thetas = self.__roll(fmin_bfgs(self.__cost_function, initial_theta, fprime=self.__cost_grad_function, maxiter=iterations))
 
     def predict(self, X):
+        """Returns predictions of input test cases."""
         return self.__cost(self.__unroll(self.__thetas), 0, np.matrix(X))
 
     def __cost_function(self, params):
+        """Cost function used by fmin_bfgs."""
         return self.__cost(params, 1, self.__X)
 
     def __cost_grad_function(self, params):
+        """Cost gradient used by fmin_bfgs."""
         return self.__cost(params, 2, self.__X)
 
     def __cost(self, params, phase, X):
-        """Computes cost function and derivative."""
+        """Computes activation, cost function, and derivative."""
         params = self.__roll(params)
         a = np.concatenate((np.ones((X.shape[0], 1)), X), axis=1) # This is a1
         calculated_a = [a] # a1 is at index 0, a_n is at index n-1
@@ -113,12 +116,15 @@ class NeuralNetwork:
         return np.array(np.concatenate([matrix.flatten() for matrix in rolled], axis=1)).reshape(-1)
 
     def sigmoid(self, z):
+        """Sigmoid function to emulate neuron activation."""
         return 1.0 / (1.0 + np.exp(-z))
 
     def sigmoid_grad(self, z):
+        """Gradient of sigmoid function."""
         return np.multiply(self.sigmoid(z), 1-self.sigmoid(z))
 
     def grad(self, params, epsilon=0.0001):
+        """Used to check gradient estimation through slope approximation."""
         grad = []
         for x in range(len(params)):
             temp = np.copy(params)
