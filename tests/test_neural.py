@@ -72,6 +72,18 @@ class TestNeural(unittest.TestCase):
         for item in xor_data:
             assert nn.predict(item[0]) == item[1]
 
+    def test_retrain(self):
+        """Tests if the neural network can be retrained for a different function."""
+        nn = neural.NeuralNetwork()
+        xor_data = [[[1,0],1],[[0,1],1],[[0,0],0],[[1,1],0]]
+        nn.train(xor_data)
+        for item in xor_data:
+            assert nn.predict(item[0]) == item[1]
+        xnor_data = [[[1,0],0],[[0,1],0],[[0,0],1],[[1,1],1]]
+        nn.train(xnor_data)
+        for item in xnor_data:
+            assert nn.predict(item[0]) == item[1]
+
     def tearDown(self):
         pass
 
