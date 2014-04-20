@@ -18,18 +18,20 @@ Neural
 
 Simple neural network implementation in Python based on Andrew Ng's Machine Learning online course. Not intended/optimized for practical use, although it does work!
 
-* Free software: BSD license
-* Documentation: http://neural.rtfd.org.
-
 Features
 --------
 
-* Vectorization
-* Multilabel classification
-* Multiple hidden layers
-* Regularization
+- Vectorization
+- Multilabel classification
+- Multiple hidden layers
+- Regularization
 
 Documentation
 -------------
 
 http://neural.rtfd.org
+
+License
+-------
+
+BSD
