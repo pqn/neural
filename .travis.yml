@@ -3,6 +3,7 @@
 language: python
 
 python:
+  - "3.4"
   - "3.3"
   - "3.2"
   - "2.7"
@@ -10,9 +11,6 @@ python:
 
 notifications:
   email: false
-
-virtualenv:
-  system_site_packages: true
 
 before_install:
   - SITE_PKG_DIR=$VIRTUAL_ENV/lib/python$TRAVIS_PYTHON_VERSION/site-packages
